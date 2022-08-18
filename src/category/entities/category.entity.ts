@@ -15,8 +15,7 @@ export class Category {
 
     @Column({
         type: 'text',
-        nullable: true,
     })
-	CPhoto: string;
+	CPhoto?: string;
 
 }

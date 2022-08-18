@@ -15,10 +15,11 @@ export class CategoryService {
     private readonly categoryRepository: Repository<Category>,
   ) { }  
 
-  async create(createCategoryDto: CreateCategoryDto) {
+  async create(createCategoryDto: CreateCategoryDto, secureUrl: string) {
 
     try {
-      
+      createCategoryDto.CPhoto = secureUrl;
+
       const category = this.categoryRepository.create(createCategoryDto);
       await this.categoryRepository.save(category);
 

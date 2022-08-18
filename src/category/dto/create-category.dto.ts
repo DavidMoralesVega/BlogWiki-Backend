@@ -1,4 +1,4 @@
-import { IsString, MinLength } from "class-validator";
+import { IsOptional, IsString, MinLength } from "class-validator";
 
 export class CreateCategoryDto {
 
@@ -7,6 +7,7 @@ export class CreateCategoryDto {
 	CDescription: string;
 
     @IsString()
-	CPhoto: string;
+    @IsOptional()
+	CPhoto?: string;
 
 }

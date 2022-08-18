@@ -3,6 +3,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 
 import { CategoryModule } from './category/category.module';
+import { FilesModule } from './files/files.module';
+import { AuthModule } from './auth/auth.module';
+import { PostModule } from './post/post.module';
 
 @Module({
   imports: [
@@ -22,6 +25,9 @@ import { CategoryModule } from './category/category.module';
     }),
     
     CategoryModule,
+    FilesModule,
+    AuthModule,
+    PostModule,
   
   ],
 })
