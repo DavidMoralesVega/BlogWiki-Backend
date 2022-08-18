@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Post } from '../../post/entities/post.entity';
 
 @Entity({ name: 'category' })
 export class Category {
@@ -17,5 +18,12 @@ export class Category {
         type: 'text',
     })
 	CPhoto?: string;
+
+    @OneToMany(
+        () => Post,
+        ( post ) => post.Category,
+        { cascade: true, eager: true }
+    )
+    Post: Post;
 
 }

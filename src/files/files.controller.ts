@@ -16,12 +16,23 @@ export class FilesController {
   ) {}
 
   @Get('category/:imageName')
-  findProductImage(
+  findCategoryImage(
     @Res() res: Response,
     @Param('imageName') imageName: string
   ) {
 
     const path = this.filesService.getStaticCategoryImage( imageName ); 
+
+    res.sendFile( path );
+  }
+
+  @Get('post/:imageName')
+  findPostImage(
+    @Res() res: Response,
+    @Param('imageName') imageName: string
+  ) {
+
+    const path = this.filesService.getStaticPostImage( imageName ); 
 
     res.sendFile( path );
   }

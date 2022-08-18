@@ -45,7 +45,7 @@ export class CategoryService {
   async findOne(IdCategory: string) {
 
     if (!isUUID(IdCategory))
-      throw new NotFoundException(`El Id ${ IdCategory } no es un UUID valido`);
+      throw new NotFoundException(`El Id de la categoria ${ IdCategory } no es un UUID valido`);
 
     const category = await this.categoryRepository.findOneBy({ IdCategory });
 

@@ -1,40 +1,47 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Post } from '../../post/entities/post.entity';
 
 
-@Entity('users')
+@Entity('user')
 export class User {
     
     @PrimaryGeneratedColumn('uuid')
-    id: string;
+    IdUser: string;
 
     @Column('text', {
         unique: true
     })
-    email: string;
+    UEmail: string;
 
     @Column('text', {
         select: false
     })
-    password: string;
+    UPassword: string;
 
     @Column('text')
-    fullName: string;
+    UFullName: string;
 
     @Column('bool', {
         default: true
     })
-    isActive: boolean;
+    UIsActive: boolean;
 
     @Column('text', {
         array: true,
         default: ['user']
     })
-    roles: string[];
+    URoles: string[];
 
+    @OneToMany(
+        () => Post,
+        ( post ) => post.User,
+        { cascade: true, eager: true }
+    )
+    Post: Post;
 
     @BeforeInsert()
     checkFieldsBeforeInsert() {
-        this.email = this.email.toLowerCase().trim();
+        this.UEmail = this.UEmail.toLowerCase().trim();
     }
 
     @BeforeUpdate()

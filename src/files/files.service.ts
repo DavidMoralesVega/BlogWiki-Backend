@@ -17,5 +17,15 @@ export class FilesService {
         return path;
     }
 
+    getStaticPostImage( imageName: string ) {
+
+        const path = join( __dirname, '../../static/post', imageName );
+
+        if ( !existsSync(path) ) 
+            throw new BadRequestException(`No post found with image ${ imageName }`);
+
+        return path;
+    }
+
 
 }
