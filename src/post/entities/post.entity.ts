@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from '../../auth/entities/user.entity';
 import { Category } from '../../category/entities/category.entity';
 
@@ -44,21 +44,50 @@ export class Post {
     })
     PRegisterDateTime: string;
 
+    @Column('text', {
+        unique: true
+    })
+    PSlug: string;
+
     @ManyToOne(
         () => User,
-        ( user ) => user.Post,
-        {  onDelete: 'CASCADE' }
+        (user) => user.Post,
+        { onDelete: 'CASCADE' }
     )
     @JoinColumn({ name: 'IdUser' })
     User: User;
 
     @ManyToOne(
         () => Category,
-        ( category ) => category.Post,
-        {  onDelete: 'CASCADE' }
+        (category) => category.Post,
+        { onDelete: 'CASCADE' }
     )
     @JoinColumn({ name: 'IdCategory' })
     Category: Category;
+
+    @BeforeInsert()
+    checkSlugInsert() {
+
+        if (!this.PSlug) {
+            this.PSlug = this.PTitle;
+        }
+
+        this.PSlug = this.PSlug
+            .toLowerCase()
+            .trim()
+            .replaceAll(' ', '-')
+            .replaceAll("'", '')
+
+    }
+
+    @BeforeUpdate()
+    checkSlugUpdate() {
+        this.PSlug = this.PSlug
+            .toLowerCase()
+            .trim()
+            .replaceAll(' ', '-')
+            .replaceAll("'", '')
+    }
 
 }
 

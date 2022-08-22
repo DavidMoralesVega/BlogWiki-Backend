@@ -45,9 +45,9 @@ export class PostController {
     return this.postService.findAll(paginationDto);
   }
 
-  @Get(':IdPost')
-  findOne(@Param('IdPost') IdPost: string) {
-    return this.postService.findOne(IdPost);
+  @Get(':Term')
+  findOne(@Param('Term') Term: string) {
+    return this.postService.findOne(Term);
   }
 
   @Patch(':IdPost')

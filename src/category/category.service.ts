@@ -13,7 +13,7 @@ export class CategoryService {
   constructor(
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
-  ) { }  
+  ) { }
 
   async create(createCategoryDto: CreateCategoryDto, secureUrl: string) {
 
@@ -24,7 +24,7 @@ export class CategoryService {
       await this.categoryRepository.save(category);
 
       return category;
-      
+
     } catch (error) {
       this.handleDBExceptions(error);
     }
@@ -42,48 +42,58 @@ export class CategoryService {
     return categories;
   }
 
-  async findOne(IdCategory: string) {
+  async findOne(Term: string) {
 
-    if (!isUUID(IdCategory))
-      throw new NotFoundException(`El Id de la categoria ${ IdCategory } no es un UUID valido`);
+    let category: Category;
 
-    const category = await this.categoryRepository.findOneBy({ IdCategory });
+    if (isUUID(Term)) {
+      category = await this.categoryRepository.findOneBy({ IdCategory: Term });
+    } else {
+      const queryBuilder = this.categoryRepository.createQueryBuilder('category');
+      category = await queryBuilder
+        .where({
+          CSlug: Term.toLowerCase(),
+        })
+        .leftJoinAndSelect('category.Post', 'CategoryPost')
+        .getOne();
+    };
 
-    if (!category) 
-      throw new NotFoundException(`Cateogria con el Id ${ IdCategory } no existe`);
+    if (!category)
+      throw new NotFoundException(`Category with ${Term} not found`);
 
     return category;
+
   }
 
   async update(IdCategory: string, updateCategoryDto: UpdateCategoryDto) {
 
     if (!isUUID(IdCategory))
-      throw new NotFoundException(`El Id ${ IdCategory } no es un UUID valido`);
+      throw new NotFoundException(`El Id ${IdCategory} no es un UUID valido`);
 
     const category = await this.categoryRepository.preload({ IdCategory, ...updateCategoryDto });
 
-    if ( !category )
-      throw new NotFoundException(`Categoria con el id: ${ IdCategory } no existe`);
+    if (!category)
+      throw new NotFoundException(`Categoria con el id: ${IdCategory} no existe`);
 
-    await this.categoryRepository.save(category); 
+    await this.categoryRepository.save(category);
 
     return category;
 
   }
 
   async remove(IdCategory: string) {
-    const category = await this.findOne( IdCategory );
+    const category = await this.findOne(IdCategory);
 
     await this.categoryRepository.remove(category);
 
     return `Categoria ${category} eliminada`;
   }
 
-  private handleDBExceptions( error: any ) {
+  private handleDBExceptions(error: any) {
 
-    if ( error.code === '23505' )
+    if (error.code === '23505')
       throw new BadRequestException(error.detail);
-    
+
     // this.logger.error(error)
     // console.log(error)
     throw new InternalServerErrorException('Unexpected error, check server logs');

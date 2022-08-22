@@ -22,6 +22,9 @@ export class CreatePostDto {
     @IsString()
     PRegisterDateTime: string;
 
+    @IsOptional()
+    PSlug?: string;
+
     @IsString()
     IdCategory: string;
 

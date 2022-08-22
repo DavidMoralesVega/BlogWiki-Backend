@@ -10,4 +10,7 @@ export class CreateCategoryDto {
     @IsOptional()
 	CPhoto?: string;
 
+    @IsOptional()
+	CSlug?: string;
+
 }

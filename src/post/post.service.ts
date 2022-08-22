@@ -8,6 +8,7 @@ import { PaginationDto } from '../common/dtos/pagination.dto';
 import { isUUID } from 'class-validator';
 import { CategoryService } from '../category/category.service';
 import { User } from '../auth/entities/user.entity';
+import { Category } from 'src/category/entities/category.entity';
 
 @Injectable()
 export class PostService {
@@ -59,23 +60,38 @@ export class PostService {
     return posts;
   }
 
-  async findOne(IdPost: string) {
+  async findOne(Term: string) {
 
-    if (!isUUID(IdPost))
-      throw new NotFoundException(`El Id ${IdPost} no es un UUID valido`);
+    let post: Post;
+    const queryBuilder = this.postRepository.createQueryBuilder('post');
 
-    const post = await this.postRepository.findOne({
-      where: { IdPost },
-      relations: {
-        Category: true,
-        User: true
-      }
-    });
+    if (isUUID(Term)) {
+      post = await queryBuilder
+        .where({
+          IdPost: Term.toLowerCase(),
+        })
+        .leftJoinAndSelect('post.Category', 'CategoryPost')
+        .leftJoinAndSelect('CategoryPost.Post', 'CategoryPostC')
+        .leftJoinAndSelect('CategoryPostC.Category', 'CategoryPostCc')
+        .leftJoinAndSelect('post.User', 'UserPost')
+        .getOne();
+    } else {
+      post = await queryBuilder
+        .where({
+          PSlug: Term.toLowerCase(),
+        })
+        .leftJoinAndSelect('post.Category', 'CategoryPost')
+        .leftJoinAndSelect('CategoryPost.Post', 'CategoryPostC')
+        .leftJoinAndSelect('CategoryPostC.Category', 'CategoryPostCc')
+        .leftJoinAndSelect('post.User', 'UserPost')
+        .getOne();
+    };
 
     if (!post)
-      throw new NotFoundException(`post con el Id ${IdPost} no existe`);
+      throw new NotFoundException(`Post with ${Term} not found`);
 
     return post;
+
   }
 
   async update(IdPost: string, updatePostDto: UpdatePostDto) {

@@ -8,6 +8,8 @@ import { diskStorage } from 'multer';
 import { fileFilter } from '../common/helpers/fileFilter.helper';
 import { fileNamer } from '../common/helpers/fileNamer.helper';
 import { ConfigService } from '@nestjs/config';
+import { Auth } from 'src/auth/decorators';
+import { ValidRoles } from 'src/auth/interfaces';
 
 @Controller('category')
 export class CategoryController {
@@ -43,9 +45,9 @@ export class CategoryController {
     return this.categoryService.findAll(paginationDto);
   }
 
-  @Get(':IdCategory')
-  findOne(@Param('IdCategory') IdCategory: string) {
-    return this.categoryService.findOne(IdCategory);
+  @Get(':Term')
+  findOne(@Param('Term') Term: string) {
+    return this.categoryService.findOne(Term);
   }
 
   @Patch(':IdCategory')
@@ -53,6 +55,7 @@ export class CategoryController {
     return this.categoryService.update(IdCategory, updateCategoryDto);
   }
 
+  // @Auth(ValidRoles.admin, ValidRoles.secretaria)
   @Delete(':IdCategory')
   remove(@Param('IdCategory') IdCategory: string) {
     return this.categoryService.remove(IdCategory);

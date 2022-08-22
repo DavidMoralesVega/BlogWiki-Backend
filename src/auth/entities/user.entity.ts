@@ -35,7 +35,8 @@ export class User {
     @OneToMany(
         () => Post,
         ( post ) => post.User,
-        { cascade: true, eager: true }
+        // { cascade: true, eager: true }
+        { cascade: true }
     )
     Post: Post;
 
