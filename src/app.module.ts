@@ -16,7 +16,7 @@ import { PostModule } from './post/post.module';
     TypeOrmModule.forRoot({
 
       // ssl: process.env.STAGE === 'prod' ? true : false,
-      
+
       ssl: process.env.STAGE === 'prod',
       extra: {
         ssl: process.env.STAGE === 'prod'
