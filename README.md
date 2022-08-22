@@ -67,3 +67,4 @@ $ yarn test:e2e
 $ yarn test:cov
 ```
 
+# Production notes:
