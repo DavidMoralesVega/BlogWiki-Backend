@@ -8,6 +8,7 @@ import * as bcrypt from 'bcrypt';
 import { User } from './entities/user.entity';
 import { LoginUserDto, CreateUserDto } from './dto';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
+import { PaginationDto } from '../common/dtos/pagination.dto';
 
 
 @Injectable()
@@ -77,13 +78,23 @@ export class AuthService {
 
   }
 
-
-
   private getJwtToken(payload: JwtPayload) {
 
     const token = this.jwtService.sign(payload);
     return token;
 
+  }
+
+  async findAll(paginationDto: PaginationDto) {
+
+    const { limit = 10, offset = 0 } = paginationDto;
+
+    const users = await this.userRepository.find({
+      take: limit,
+      skip: offset,
+    });
+
+    return users;
   }
 
   private handleDBErrors(error: any): never {

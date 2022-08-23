@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
 import { GetUser, Auth } from './decorators';
 
 import { CreateUserDto, LoginUserDto } from './dto';
 import { User } from './entities/user.entity';
+import { PaginationDto } from '../common/dtos/pagination.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -26,6 +27,12 @@ export class AuthController {
     @GetUser() user: User
   ) {
     return this.authService.checkAuthStatus( user );
+  }
+
+
+  @Get('users')
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.authService.findAll(paginationDto);
   }
 
 }
