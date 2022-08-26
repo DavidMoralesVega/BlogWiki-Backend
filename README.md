@@ -12,9 +12,10 @@
 
 API REST BLOG
 
- 1. user
- 1. post
- 1. category
+ 1. Module User
+ 1. Module Post
+ 1. Module Category
+ 1. Module File
 
 ## Technologies
 
@@ -33,6 +34,25 @@ When you use this template, try follow the checklist to update your info properl
 - [ ] Clone the `.env.template` file and rename it to `.env`
 - [ ] Change the environment variables
 - [ ] Raise the database
+
+
+## Necessary installations
+```bash
+# Node JS
+https://nodejs.org/
+```
+```bash
+# Yarn
+$ npm install --global yarn
+```
+```bash
+# Typescript
+$ npm install -g typescript
+```
+```bash
+#  Nest JS
+$ npm install -g @nestjs/cli
+```
 
 
 ## Installation
@@ -66,5 +86,3 @@ $ yarn test:e2e
 # test coverage
 $ yarn test:cov
 ```
-
-# Production notes:
